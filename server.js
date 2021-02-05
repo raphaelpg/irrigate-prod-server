@@ -27,11 +27,11 @@ mongoose.connection.on('connected', () => {
 //Data parsing
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
-app.use('/ressources', express.static('ressources'))
+// app.use('/ressources', express.static('ressources'))
 
 
 app.use('/', routes);
 
-app.use(express.static('./irrigate-client/public/'));	
+// app.use(express.static('./irrigate-client/public/'));
 
 app.listen(PORT, console.log(`Server listening at ${PORT}`)); 

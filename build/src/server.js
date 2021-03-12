@@ -9,7 +9,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 require("dotenv/config");
-const api_1 = __importDefault(require("./src/routes/api"));
+const api_1 = __importDefault(require("./routes/api"));
 const app = express_1.default();
 app.use(cors_1.default());
 app.use(helmet_1.default());

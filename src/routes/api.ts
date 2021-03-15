@@ -4,7 +4,8 @@ import MongoCause from '../models/cause'
 import {Cause} from '../interfaces/cause'
 let router: express.Router = express.Router();
 
-const MONGO_ASSOCIATIONS_DB = process.env.MONGO_ASSOCIATIONS_DB ||'';
+// const MONGO_ASSOCIATIONS_DB = process.env.MONGO_ASSOCIATIONS_DB ||'';
+const MONGO_ASSOCIATIONS_DB = process.env.MONGO_TEMPORARY_ASSOCIATIONS_DB ||'';
 
 router.get('/api/causes', (req, res) => {
 	let collection = mongoose.connection.collection(MONGO_ASSOCIATIONS_DB);
@@ -15,7 +16,7 @@ router.get('/api/causes', (req, res) => {
 });
 
 router.post('/api/addcause', (req, res) => {
-	const {name, description, link, category, continent, country, address, logoName, logo}: Cause = req.body;
+	const {name, description, link, category, continent, country, address, logo}: Cause = req.body;
 	const newCause: Cause = new MongoCause({
 		name: name,
 		description: description,
@@ -24,7 +25,6 @@ router.post('/api/addcause', (req, res) => {
 		continent: continent,
 		country: country,
 		address: address,
-		logoName: logoName,
 		logo: logo,
 	});
 	let collection = mongoose.connection.collection(MONGO_ASSOCIATIONS_DB);

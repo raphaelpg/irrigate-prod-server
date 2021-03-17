@@ -7,5 +7,7 @@ export interface Cause {
   country: String,
   address?: String,
   logoName?: String,
-  logo?: String
+  logo?: String,
+  contactName: String,
+  contactEmail: String
 }

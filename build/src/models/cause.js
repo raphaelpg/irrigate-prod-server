@@ -18,7 +18,9 @@ const CauseSchema = new Schema({
     country: String,
     address: String,
     logoName: String,
-    logo: String
+    logo: String,
+    contactName: String,
+    contactEmail: String
 });
 const Cause = mongoose_1.default.model('Cause', CauseSchema);
 exports.default = Cause;

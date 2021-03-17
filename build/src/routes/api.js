@@ -17,7 +17,7 @@ router.get('/api/causes', (req, res) => {
     });
 });
 router.post('/api/addcause', (req, res) => {
-    const { name, description, link, category, continent, country, address, logo } = req.body;
+    const { name, description, link, category, continent, country, address, logo, contactName, contactEmail } = req.body;
     const newCause = new cause_1.default({
         name: name,
         description: description,
@@ -27,6 +27,8 @@ router.post('/api/addcause', (req, res) => {
         country: country,
         address: address,
         logo: logo,
+        contactName: contactName,
+        contactEmail: contactEmail
     });
     let collection = mongoose_1.default.connection.collection(MONGO_ASSOCIATIONS_DB);
     collection.insertOne(newCause, (error) => {
@@ -34,8 +36,8 @@ router.post('/api/addcause', (req, res) => {
             res.status(500).json({ msg: 'Internal server error' });
         }
         res.status(200).json({ msg: 'Cause added successfully' });
-        //send email to cause poster
-        //send email to owner
+        // send email to cause poster
+        // send email to owner
     });
 });
 module.exports = router;

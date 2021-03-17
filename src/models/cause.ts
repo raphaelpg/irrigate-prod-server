@@ -14,7 +14,9 @@ const CauseSchema = new Schema({
   country: String,
   address: String,
   logoName: String,
-  logo: String
+  logo: String,
+  contactName: String,
+  contactEmail: String
 });
 
 const Cause: mongoose.Model<any> = mongoose.model('Cause', CauseSchema);

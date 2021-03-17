@@ -35,8 +35,6 @@ router.post('/api/addcause', (req, res) => {
 			res.status(500).json({ msg: 'Internal server error' });
 		}
 		res.status(200).json({msg: 'Cause added successfully'});
-		// send email to cause poster
-		// send email to owner
 	});
 })
 

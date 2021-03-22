@@ -42,7 +42,7 @@ node_modules/
 jspm_packages/
 
 #Typescript compiled JS
-# build/
+build/
 
 # TypeScript v1 declaration files
 typings/

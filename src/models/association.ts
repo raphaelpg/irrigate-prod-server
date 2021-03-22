@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
-const CauseSchema = new Schema({
+const AssociationSchema = new Schema({
   date: {
     type: String,
     default: Date.now()
@@ -19,6 +19,6 @@ const CauseSchema = new Schema({
   contactEmail: String
 });
 
-const Cause: mongoose.Model<any> = mongoose.model('Cause', CauseSchema);
+const Association: mongoose.Model<any> = mongoose.model('Association', AssociationSchema);
 
-export default Cause
+export default Association;

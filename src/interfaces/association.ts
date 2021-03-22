@@ -1,4 +1,4 @@
-export interface Cause {
+export default interface IAssociation {
   name: String,
   description: String,
   link?: String,
@@ -10,4 +10,4 @@ export interface Cause {
   logo?: String,
   contactName: String,
   contactEmail: String
-}
+};

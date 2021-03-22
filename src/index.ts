@@ -3,8 +3,10 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import 'dotenv/config'
-import routes from './routes/api';
+import 'dotenv/config';
+import associationRouter from './routes/association';
+import messageRouter from './routes/contactMessage';
+import userRouter from './routes/user';
 
 const app = express();
 app.use(cors());
@@ -27,6 +29,8 @@ mongoose.connection.on('connected', () => {
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use('/', routes);
+app.use(associationRouter);
+app.use(messageRouter);
+app.use(userRouter);
 
 app.listen(PORT, () => (console.log(`Server listening at ${PORT}`))); 

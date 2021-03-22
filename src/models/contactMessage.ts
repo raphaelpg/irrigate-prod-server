@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema;
 const ContactMessageSchema = new Schema({
-	// _id: mongoose.Schema.Types.ObjectId,
   date: {
     type: String,
     default: Date.now()
@@ -20,7 +19,7 @@ const ContactMessageSchema = new Schema({
     type: String, 
     required: true
   },
-})
+});
 
 const ContactMessage: mongoose.Model<any> = mongoose.model('ContactMessage', ContactMessageSchema);
 

@@ -5,10 +5,11 @@ import IContactMessage from '../interfaces/contactMessage';
 const MONGO_CONTACT_MESSAGES_DB = process.env.MONGO_CONTACT_MESSAGES_DB ||'';
 
 export const serviceContactMessage = (query: IContactMessage) => {
+	const { name, email, message }: IContactMessage = query;
 	const newContactMessage: IContactMessage = new MongoContactMessage({
-		name: query.name,
-		email: query.email,
-		message: query.message
+		name: name,
+		email: email,
+		message: message
 	});
 	let collection = mongoose.connection.collection(MONGO_CONTACT_MESSAGES_DB);
 	collection.insertOne(newContactMessage, (error) => {

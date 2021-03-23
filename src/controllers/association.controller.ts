@@ -1,21 +1,20 @@
-import express from 'express';
+import { Request, Response } from 'express';
 import mongoose from 'mongoose';
-import MongoAssociation from '../models/association';
+import MongoAssociation from '../models/association.model';
 import IAssociation from '../interfaces/association';
-let associationRouter: express.Router = express.Router();
 
 // const MONGO_ASSOCIATIONS_DB = process.env.MONGO_ASSOCIATIONS_DB ||'';
 const MONGO_ASSOCIATIONS_DB = process.env.MONGO_TEMPORARY_ASSOCIATIONS_DB ||'';
 
-associationRouter.get('/api/associations', (req, res) => {
+export const getAssociations = (req: Request, res: Response) => {
 	let collection = mongoose.connection.collection(MONGO_ASSOCIATIONS_DB);
 	collection.find({	}).toArray((err, data) => {
 		if (err) throw err
 		res.json(data)
 	});
-});
+};
 
-associationRouter.post('/api/add_association', (req, res) => {
+export const addAssociation = (req: Request, res: Response) => {
 	const {name, description, link, category, continent, country, address, logo, contactName, contactEmail}: IAssociation = req.body;
 	const newAssociation: IAssociation = new MongoAssociation({
 		name: name,
@@ -36,6 +35,4 @@ associationRouter.post('/api/add_association', (req, res) => {
 		}
 		res.status(200).json({msg: 'Association added successfully'});
 	});
-});
-
-export = associationRouter;
+}

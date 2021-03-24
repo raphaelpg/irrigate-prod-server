@@ -1,37 +1,37 @@
-import mongoose from 'mongoose';
+import { Db } from 'mongodb';
 import MongoAssociation from '../models/association.model';
 import IAssociation from '../interfaces/association';
 
-// const MONGO_ASSOCIATIONS_DB = process.env.MONGO_ASSOCIATIONS_DB ||'';
-const MONGO_ASSOCIATIONS_DB = process.env.MONGO_TEMPORARY_ASSOCIATIONS_DB ||'';
+// const associationsCollection = process.env.MONGO_ASSOCIATIONS_COLLECTION || '';
+const associationsCollection = process.env.MONGO_TEMPORARY_ASSOCIATIONS_COLLECTION || '';
 
-export const serviceGetAssociations = async () => {
+export const serviceGetAssociations = async (connectDb: () => Promise<Db>) => {
   try {
-    let collection = mongoose.connection.collection(MONGO_ASSOCIATIONS_DB);
-    let associations = await collection.find({ }).toArray();
+    const database: Db = await connectDb()
+    const associations = await database.collection(associationsCollection).find({}).toArray();
     return associations;
   } catch (e) {
     throw Error('Error retrieving associations from database');
   }
 };
 
-export const serviceAddAssociation = async (query: IAssociation) => {
+export const serviceAddAssociation = async (connectDb: () => Promise<Db>, query: IAssociation) => {
   try {
     const {name, description, link, category, continent, country, address, logo, contactName, contactEmail}: IAssociation = query;
     const newAssociation: IAssociation = new MongoAssociation({
-      name: name,
-      description: description,
-      link: link,
-      category: category,
-      continent: continent,
-      country: country,
-      address: address,
-      logo: logo,
-      contactName: contactName,
-      contactEmail: contactEmail
+      name,
+      description,
+      link,
+      category,
+      continent,
+      country,
+      address,
+      logo,
+      contactName,
+      contactEmail
     });
-    let collection = mongoose.connection.collection(MONGO_ASSOCIATIONS_DB);
-    await collection.insertOne(newAssociation);
+    const database: Db = await connectDb();
+    await database.collection(associationsCollection).insertOne(newAssociation);
     return;
   } catch (e) {
     throw Error('Error on inserting association to database');

@@ -1,19 +1,15 @@
 import { Request, Response } from 'express';
 import { serviceSignUp } from '../services/user.service';
-import { connectDb } from '../data-access/index';
-
-const usersCollection = process.env.MONGO_USERS_COLLECTION ||'';
+import { findUserByEmail, insertUser } from '../data-access/dbAccess';
 
 export const signUp = async (req: Request, res: Response) => {
 	let query = req.body;
-	//control request parameters
 	try {
-		const database = await connectDb();
-		const result = await database.collection(usersCollection).find({ email: req.body.email }).count();
-		if (result !== 0) {
+		const result = await findUserByEmail(query.email);
+		if ((await result.count()) !== 0) {
 			return res.status(409).json({msg: 'Email address already used'});
 		} else {
-			await serviceSignUp(connectDb, query);
+			await serviceSignUp(insertUser, query);
 			return res.status(200).json({ status: 200, msg: 'User created' });
 		}
 	} catch (e) {

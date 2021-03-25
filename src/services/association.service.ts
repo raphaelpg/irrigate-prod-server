@@ -1,37 +1,17 @@
-import { Db } from 'mongodb';
-import MongoAssociation from '../models/association.model';
 import IAssociation from '../interfaces/association';
 
-// const associationsCollection = process.env.MONGO_ASSOCIATIONS_COLLECTION || '';
-const associationsCollection = process.env.MONGO_TEMPORARY_ASSOCIATIONS_COLLECTION || '';
-
-export const serviceGetAssociations = async (connectDb: () => Promise<Db>) => {
+export const serviceGetAssociations = async (findAllAssociations: () => Promise<any>) => {
   try {
-    const database: Db = await connectDb()
-    const associations = await database.collection(associationsCollection).find({}).toArray();
+    const associations: IAssociation[] = await findAllAssociations();
     return associations;
   } catch (e) {
     throw Error('Error retrieving associations from database');
   }
 };
 
-export const serviceAddAssociation = async (connectDb: () => Promise<Db>, query: IAssociation) => {
+export const serviceAddAssociation = async (insertAssociation: (query: IAssociation) => Promise<any>, query: IAssociation) => {
   try {
-    const {name, description, link, category, continent, country, address, logo, contactName, contactEmail}: IAssociation = query;
-    const newAssociation: IAssociation = new MongoAssociation({
-      name,
-      description,
-      link,
-      category,
-      continent,
-      country,
-      address,
-      logo,
-      contactName,
-      contactEmail
-    });
-    const database: Db = await connectDb();
-    await database.collection(associationsCollection).insertOne(newAssociation);
+    await insertAssociation(query);
     return;
   } catch (e) {
     throw Error('Error on inserting association to database');

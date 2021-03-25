@@ -1,6 +1,6 @@
 export default interface IContactMessage {
-  date: String,
-  name: String,
-  email: String,
-  message: String,
+  date: string,
+  name: string,
+  email: string,
+  message: string,
 };

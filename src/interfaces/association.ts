@@ -1,13 +1,13 @@
 export default interface IAssociation {
-  name: String,
-  description: String,
-  link?: String,
-  category: String,
-  continent: String,
-  country: String,
-  address?: String,
-  logoName?: String,
-  logo?: String,
-  contactName: String,
-  contactEmail: String
+  name: string,
+  description: string,
+  link?: string,
+  category: string,
+  continent: string,
+  country: string,
+  address?: string,
+  logoName?: string,
+  logo?: string,
+  contactName: string,
+  contactEmail: string
 };

@@ -1,6 +1,6 @@
 import { Db } from 'mongodb';
 import { connectDb } from './index';
-import bcrypt from 'bcrypt';
+import hashString from './hash';
 import IContactMessage from '../interfaces/contactMessage';
 import IUser from '../interfaces/user';
 import IAssociation from '../interfaces/association';
@@ -50,23 +50,14 @@ export const insertMessage = async (query: IContactMessage) => {
 }
 
 export const insertUser = async (query: IUser) => {
-  try {
-    bcrypt.hash(query.password, 10, async (err, hash) => {
-      if (err) {
-        throw Error('Error hashing password');
-      } else {
-        const newUser: IUser = new MongoUser({
-          email: query.email,
-          password: hash
-        });
-        const database = await connectDb();
-        const result = await database.collection(usersCollection).insertOne(newUser);
-        return result.ops[0];
-      }
-    });
-  } catch (e) {
-    throw Error('Error while inserting user');
-  }
+  let hash = await hashString(query.password);
+  const newUser: IUser = new MongoUser({
+    email: query.email,
+    password: hash
+  });
+  const database = await connectDb();
+  const result = await database.collection(usersCollection).insertOne(newUser);
+  return result.ops[0];
 }
 
 export const findUserByEmail = async (email: string) => {

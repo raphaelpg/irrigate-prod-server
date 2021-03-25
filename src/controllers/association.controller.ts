@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { serviceGetAssociations, serviceAddAssociation } from '../services/association.service';
-import { findAllAssociations, insertAssociation } from '../data-access/dbAccess';
+import { findAllAssociations, insertAssociation } from '../data-access/index';
 
 export const getAssociations = async (req: Request, res: Response) => {
 	try {

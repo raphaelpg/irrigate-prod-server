@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import { serviceSignUp } from '../services/user.service';
-import { findUserByEmail, insertUser } from '../data-access/dbAccess';
+import { findUserByEmail, insertUser } from '../data-access/index'
 
 export const signUp = async (req: Request, res: Response) => {
 	let query = req.body;
 	try {
 		const result = await findUserByEmail(query.email);
-		if ((await result.count()) !== 0) {
+		if (result.length !== 0) {
 			return res.status(409).json({msg: 'Email address already used'});
 		} else {
 			await serviceSignUp(insertUser, query);

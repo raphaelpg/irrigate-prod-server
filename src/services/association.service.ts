@@ -1,15 +1,15 @@
 import IAssociation from '../interfaces/association';
 
-export const serviceGetAssociations = async (findAllAssociations: () => Promise<any>) => {
+export const serviceGetAssociations = async (findAllAssociations: () => Promise<IAssociation[]>) => {
   try {
-    const associations: IAssociation[] = await findAllAssociations();
+    const associations = await findAllAssociations();
     return associations;
   } catch (e) {
     throw Error('Error retrieving associations from database');
   }
 };
 
-export const serviceAddAssociation = async (insertAssociation: (query: IAssociation) => Promise<any>, query: IAssociation) => {
+export const serviceAddAssociation = async (insertAssociation: (query: IAssociation) => Promise<IAssociation>, query: IAssociation) => {
   try {
     await insertAssociation(query);
     return;

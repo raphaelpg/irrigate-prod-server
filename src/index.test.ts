@@ -1,6 +1,7 @@
 import request from 'supertest';
 import {app} from './index';
 import mockAssociation from './tests/mocks/mockAssociation';
+import mockUser from './tests/mocks/mockUser';
 
 describe('test app routes', () => {
 
@@ -32,6 +33,22 @@ describe('test app routes', () => {
       .expect(200)
       .then(response => {
         expect(response.body.data[response.body.data.length -1].name).toEqual(mockAssociation.name);
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+  test('POST /signup', async (done) => {
+    await request(app)
+      .post('/signup')
+      .send(mockUser)
+
+    request(app)
+      .post('/user')
+      .send({email: mockUser.email})
+      .expect(200)
+      .then(response => {
+        expect(response.body.data[response.body.data.length -1].email).toEqual(mockUser.email);
         done();
       })
       .catch(err => done(err));

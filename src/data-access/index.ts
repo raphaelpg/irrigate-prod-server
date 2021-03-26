@@ -25,7 +25,7 @@ export const connectDb: () => Promise<Db> = async () => {
 	return client.db(dbName);
 }
 
-export const findUserByEmail: (email: string) => Promise<IUser[]> = async (email) => {
+export const findUserByEmail: (email: string) => Promise<any[]> = async (email) => {
 	return await find(usersCollection, {email});
 }
 

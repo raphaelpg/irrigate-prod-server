@@ -1,12 +1,16 @@
-import { Router } from 'express'
+import { Router } from 'express';
+import { getAssociations, addAssociation } from '../controllers/association.controller';
 import { sendMessage } from '../controllers/contactMessage.controller';
 import { signUp } from '../controllers/user.controller';
-import { getAssociations, addAssociation } from '../controllers/association.controller';
+
 let router: Router = Router();
 
-router.get('/api/associations', getAssociations)
+router.get('/api/associations', getAssociations);
 router.post('/api/add_association', addAssociation);
 router.post('/message', sendMessage);
-router.post('/signup', signUp)
+router.post('/signup', signUp);
+router.get('/auth', (err, res, req) => {
+  res.status(200).json({ status: 200, msg: 'User created' });
+});
 
 export = router;

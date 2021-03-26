@@ -1,19 +1,22 @@
 import { MongoClient, Db } from 'mongodb';
+import { insert, find } from './dbAccess';
+import hash from './hash';
 import IAssociation from '../interfaces/association';
 import IContactMessage from '../interfaces/contactMessage';
 import IUser from '../interfaces/user';
-import { insert, find } from './dbAccess';
-import hash from './hash';
 
 const url: string = process.env.MONGO_URI || '';
 const dbName: string = process.env.MONGO_DB_NAME || '';
 const associationsCollection = process.env.MONGO_TEMPORARY_ASSOCIATIONS_COLLECTION || '';
 const usersCollection = process.env.MONGO_USERS_COLLECTION || '';
 const contactMessagesCollection = process.env.MONGO_CONTACT_MESSAGES_COLLECTION || '';
-const client = new MongoClient(url, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
-});
+const client = new MongoClient(
+	url, 
+	{
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	}
+);
 
 export const connectDb: () => Promise<Db> = async () => {
 	if (!client.isConnected()) {

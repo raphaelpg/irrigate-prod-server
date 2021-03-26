@@ -17,3 +17,12 @@ export const serviceSignUp = async (insertUser: (query: IUser) => Promise<IUser>
     throw Error('Error while inserting user');
   }
 }
+
+export const serviceDeleteUser = async (deleteUserByEmail: any, email: string) => {
+  try {
+    await deleteUserByEmail(email);
+    return;
+  } catch (e) {
+    throw Error('Error while deleting user');
+  }
+}

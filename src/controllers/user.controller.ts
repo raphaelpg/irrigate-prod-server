@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { serviceGetUser, serviceSignUp } from '../services/user.service';
-import { findUserByEmail, insertUser } from '../data-access/index'
+import { serviceGetUser, serviceSignUp, serviceDeleteUser } from '../services/user.service';
+import { findUserByEmail, insertUser, deleteUserByEmail } from '../data-access/index'
 
 export const signUp = async (req: Request, res: Response) => {
 	let query = req.body;
@@ -22,6 +22,16 @@ export const getUser = async (req: Request, res: Response) => {
 	try {
 		const user = await serviceGetUser(findUserByEmail, query.email);
 		return res.status(200).json({ status: 200, data: user, msg: 'User retrieved successfully'});
+	} catch (e) {
+		return res.status(400).json({ status: 400, msg: e.message });
+	}
+}
+
+export const deleteUser = async (req: Request, res: Response) => {
+	let query = req.body;
+	try {
+		await serviceDeleteUser(deleteUserByEmail, query.email);
+		return res.status(200).json({ status: 200, msg: 'User deleted' });
 	} catch (e) {
 		return res.status(400).json({ status: 400, msg: e.message });
 	}

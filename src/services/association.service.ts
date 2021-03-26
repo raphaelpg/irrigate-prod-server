@@ -17,3 +17,12 @@ export const serviceAddAssociation = async (insertAssociation: (query: IAssociat
     throw Error('Error on inserting association to database');
   }
 }
+
+export const serviceDeleteAssociation = async (deleteAssociationByName: any, name: string) => {
+  try {
+    await deleteAssociationByName(name);
+    return;
+  } catch (e) {
+    throw Error('Error while deleting association');
+  }
+}

@@ -1,4 +1,4 @@
-import IAssociation from '../../interfaces/association';
+import IAssociation from '../interfaces/association';
 
 const mockAssociation: IAssociation = {
   name:"Mock association",

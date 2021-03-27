@@ -54,3 +54,5 @@ export const deleteUserByEmail: (email: string) => void = async (email) => {
 export const deleteAssociationByName: (name: string) => void = async (name) => {
 	return await remove(associationsCollection, { name });
 }
+
+// export const updateAssociationByName: (name: string, ) => void = async ({ ...query })

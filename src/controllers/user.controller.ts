@@ -21,6 +21,9 @@ export const getUser = async (req: Request, res: Response) => {
 	let query = req.body;
 	try {
 		const user = await serviceGetUser(findUserByEmail, query.email);
+		if (user.length === 0) {
+			return res.status(200).json({ status: 200, data: user, msg: 'User not found'});
+		}
 		return res.status(200).json({ status: 200, data: user, msg: 'User retrieved successfully'});
 	} catch (e) {
 		return res.status(400).json({ status: 400, msg: e.message });

@@ -18,3 +18,9 @@ export const remove = async (collection: string, { ...query }) => {
   const result = await database.collection(collection).deleteOne({ ...query });
   return result;
 }
+
+export const update = async (collection: string, { ...query }) => {
+  const database = await connectDb();
+  const result = await database.collection(collection).updateOne({ ...query }, { ...query });
+  return result;
+}

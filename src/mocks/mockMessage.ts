@@ -1,4 +1,4 @@
-import IContactMessage from '../../interfaces/contactMessage'
+import IContactMessage from '../interfaces/contactMessage'
 
 const mockMessage: IContactMessage = {
   name: "mockName",

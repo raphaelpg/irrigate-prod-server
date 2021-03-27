@@ -1,4 +1,4 @@
-import IUser from '../../interfaces/user'
+import IUser from '../interfaces/user'
 
 const mockUser: IUser = {
   email: "mock@mock.com",

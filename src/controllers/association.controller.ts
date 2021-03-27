@@ -24,7 +24,7 @@ export const addAssociation = async (req: Request, res: Response) => {
 export const deleteAssociation = async (req: Request, res: Response) => {
 	let query = req.body;
 	try {
-		await serviceDeleteAssociation(deleteAssociationByName, query.email);
+		await serviceDeleteAssociation(deleteAssociationByName, query.name);
 		return res.status(200).json({ status: 200, msg: 'Association deleted' });
 	} catch (e) {
 		return res.status(400).json({ status: 400, msg: e.message });

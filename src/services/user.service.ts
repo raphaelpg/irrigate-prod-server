@@ -1,27 +1,38 @@
+import { insert, find, remove } from './dbAccessFunctions';
 import IUser from '../interfaces/user';
+import hashString from '../external_functions/hash';
 
-export const serviceGetUser = async (findUserByEmail: (email: string) => Promise<any[]>, email: string) => {
-  try {
-    const user = await findUserByEmail(email);
-    return user;
-  } catch (e) {
-    throw Error('Error while retrieving user');
-  }
+const usersCollection = process.env.MONGO_USERS_COLLECTION!;
+
+export const findUserByEmail: (email: string) => Promise<IUser[]> = async (email) => {
+	return await find(usersCollection, { email });
 }
 
-export const serviceSignUp = async (insertUser: (query: IUser) => Promise<IUser>, query: IUser) => {
+export const serviceSignUp = async (query: IUser) => {
+  const result = await findUserByEmail(query.email);
+  if (result.length !== 0) {
+    throw Error('Email address already used');
+  }
   try {
-    await insertUser(query);
-    return;
+    const { email, password } = query;
+    const hashedPassword = await hashString(password);
+    return await insert(usersCollection, { email, password: hashedPassword });
   } catch (e) {
     throw Error('Error while inserting user');
   }
 }
 
-export const serviceDeleteUser = async (deleteUserByEmail: any, email: string) => {
+export const serviceGetUser = async (email: string) => {
   try {
-    await deleteUserByEmail(email);
-    return;
+    return await find(usersCollection, { email });
+  } catch (e) {
+    throw Error('Error while retrieving user');
+  }
+}
+
+export const serviceDeleteUser = async (email: string) => {
+  try {
+    return await remove(usersCollection, { email });
   } catch (e) {
     throw Error('Error while deleting user');
   }

@@ -6,14 +6,6 @@ import mockMessage from './mocks/mockMessage';
 
 describe('test app routes', () => {
 
-  test('GET /auth', (done) => {
-    request(app)
-      .get('/auth')
-      .set('Accept', 'application/json')
-      .expect('Content-Type', /json/)
-      .expect(200, done)
-  });
-  
   test('GET /api/associations', (done) => {
     request(app)
       .get('/api/associations')
@@ -73,7 +65,7 @@ describe('test app routes', () => {
     await request(app)
       .post('/signup')
       .send(mockUser)
-      .expect(409)
+      .expect(400)
       .catch(err => done(err));
 
     request(app)

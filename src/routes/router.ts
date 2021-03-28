@@ -13,8 +13,5 @@ router.post('/user', getUser);
 router.post('/signup', signUp);
 router.post('/signout', deleteUser);
 router.post('/message', sendMessage);
-router.get('/auth', (err, res, req) => {
-  res.status(200).json({ status: 200, msg: 'User created' });
-});
 
 export = router;

@@ -1,8 +1,11 @@
+import { insert } from './dbAccessFunctions';
 import IContactMessage from '../interfaces/contactMessage';
 
-export const serviceContactMessage = async (insertContactMesssage: (query: IContactMessage) => Promise<any>, query: IContactMessage) => {
+const contactMessagesCollection = process.env.MONGO_CONTACT_MESSAGES_COLLECTION!;
+
+export const serviceContactMessage = async (query: IContactMessage) => {
 	try {
-		await insertContactMesssage(query);
+		await insert(contactMessagesCollection, { ...query });
 		return;
 	} catch (e) {
 		throw Error('Error on inserting message');

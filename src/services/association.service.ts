@@ -26,3 +26,9 @@ export const serviceDeleteAssociation = async (deleteAssociationByName: any, nam
     throw Error('Error while deleting association');
   }
 }
+
+export const serviceUpdateAssociation = async (updateAssociationByName: any, name: {}, query: {}) => {
+  const result = await updateAssociationByName(name, query);
+  if (result.matchedCount === 1) return;
+  throw Error('Error while updating association'); 
+}

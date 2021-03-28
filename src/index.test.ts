@@ -39,6 +39,16 @@ describe('test app routes', () => {
       .catch(err => done(err));
   });
 
+  test('POST /api/update_association', (done) => {
+    request(app)
+      .post('/api/update_association')
+      .send({ name: mockAssociation.name, continent: 'Worldwide', country: 'Worldwide' })
+      .expect(200)
+      .then(() => {
+        done();
+      })
+  })
+
   test('POST /api/delete_association', async (done) => {
     await request(app)
       .post('/api/delete_association')

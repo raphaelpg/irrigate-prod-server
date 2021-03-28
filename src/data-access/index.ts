@@ -1,6 +1,6 @@
 import { MongoClient, Db } from 'mongodb';
-import { insert, find, remove } from './dbAccess';
-import hash from './hash';
+import { insert, find, remove, update } from './dbAccess';
+import hashString from './hash';
 import IAssociation from '../interfaces/association';
 import IContactMessage from '../interfaces/contactMessage';
 import IUser from '../interfaces/user';
@@ -35,7 +35,7 @@ export const findAllAssociations: () => Promise<IAssociation[]> = async () => {
 
 export const insertUser: (user: IUser) => Promise<IUser> = async ({ ...query }) => {
 	const { email, password } = query;
-	const hashedPassword = await hash(password);
+	const hashedPassword = await hashString(password);
 	return await insert(usersCollection, { email, password: hashedPassword });
 }
 
@@ -55,4 +55,6 @@ export const deleteAssociationByName: (name: string) => void = async (name) => {
 	return await remove(associationsCollection, { name });
 }
 
-// export const updateAssociationByName: (name: string, ) => void = async ({ ...query })
+export const updateAssociationByName: (name: {}, query: {}) => {} = async (name, query) => {
+	return await update(associationsCollection, name, query);
+}

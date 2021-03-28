@@ -19,8 +19,8 @@ export const remove = async (collection: string, { ...query }) => {
   return result;
 }
 
-export const update = async (collection: string, { ...query }) => {
+export const update = async (collection: string, filter: {}, query: {}) => {
   const database = await connectDb();
-  const result = await database.collection(collection).updateOne({ ...query }, { ...query });
+  const result = await database.collection(collection).updateOne(filter, [{ $set: query }]);
   return result;
 }

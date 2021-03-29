@@ -27,20 +27,20 @@ export const insert = async (collection: string, { ...query }) => {
   const database = await connectDb();
   const date = Date.now().toString();
 	const result = await database.collection(collection).insertOne({creationDate: date, ...query});
-  // console.log("insert result: ", result.insertedCount)
-  return result.ops[0];
+  if (result.insertedCount === 1) return result;
+  throw Error('Error inserting item');
 }
 
 export const remove = async (collection: string, { ...query }) => {
   const database = await connectDb();
   const result = await database.collection(collection).deleteOne({ ...query });
-  // console.log("remove result: ", result.deletedCount)
-  return result;
+  if (result.deletedCount === 1) return result
+  throw Error('Error deleting item');
 }
 
 export const update = async (collection: string, filter: {}, query: {}) => {
   const database = await connectDb();
   const result = await database.collection(collection).updateOne(filter, [{ $set: query }]);
-  // console.log("update result: ", result.modifiedCount)
-  return result;
+  if (result.matchedCount === 1) return result;
+  throw Error('Error updating item');
 }

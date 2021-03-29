@@ -5,7 +5,8 @@ import hashString from '../external_functions/hash';
 const usersCollection = process.env.MONGO_USERS_COLLECTION!;
 
 export const findUserByEmail: (email: string) => Promise<IUser[]> = async (email) => {
-	return await find(usersCollection, { email });
+	const result = await find(usersCollection, { email });
+  return result;
 }
 
 export const serviceSignUp = async (query: IUser) => {

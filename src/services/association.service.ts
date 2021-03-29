@@ -31,7 +31,10 @@ export const serviceDeleteAssociation = async (name: string) => {
 }
 
 export const serviceUpdateAssociation = async (name: {}, query: {}) => {
-  const result = await update(associationsCollection, name, query);
-  if (result.matchedCount === 1) return;
-  throw Error('Error while updating association'); 
+  try {
+    await update(associationsCollection, name, query);
+    return;
+  } catch (e) {
+    throw Error('Error while updating association'); 
+  }
 }

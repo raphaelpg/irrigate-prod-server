@@ -40,7 +40,7 @@ export const addAssociation = async (req: Request, res: Response) => {
 	let query = req.body;
 	try {
 		await serviceAddAssociation(query);
-		return res.status(200).json({ status: 200, msg: 'Association added successfully'});
+		return res.status(201).json({ status: 201, msg: 'Association added successfully'});
 	} catch (e) {
 		return res.status(400).json({ status: 400, msg: e.message });
 	}

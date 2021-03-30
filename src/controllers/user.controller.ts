@@ -17,7 +17,7 @@ export const signUp = async (req: Request, res: Response) => {
 	let query = req.body;
 	try {
 		await serviceSignUp(query);
-		return res.status(200).json({ status: 200, msg: 'User created' });
+		return res.status(201).json({ status: 201, msg: 'User created' });
 	} catch (e) {
 		return res.status(400).json({ status: 400, msg: e.message });
 	}

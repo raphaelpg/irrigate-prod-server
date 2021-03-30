@@ -5,9 +5,9 @@ import mockUserTemplates from './mocks/mockUser';
 import mockMessage from './mocks/mockMessage';
 
 describe('test user routes', () => {
-  test('POST /signup Fake email', async (done) => {
+  test('POST /api/user/add Fake email', async (done) => {
     await request(server)
-      .post('/signup')
+      .post('/api/user/add')
       .send(mockUserTemplates.mockFakeEmailUser)
       .expect(400)
       .then((response) => {
@@ -17,9 +17,9 @@ describe('test user routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /signup Empty email', async (done) => {
+  test('POST /api/user/add Empty email', async (done) => {
     await request(server)
-      .post('/signup')
+      .post('/api/user/add')
       .send(mockUserTemplates.mockEmptyEmailUser)
       .expect(400)
       .then((response) => {
@@ -29,9 +29,9 @@ describe('test user routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /signup Empty password', async (done) => {
+  test('POST /api/user/add Empty password', async (done) => {
     await request(server)
-      .post('/signup')
+      .post('/api/user/add')
       .send(mockUserTemplates.mockEmptyPasswordUser)
       .expect(400)
       .then((response) => {
@@ -41,9 +41,9 @@ describe('test user routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /signup Too short password', async (done) => {
+  test('POST /api/user/add Too short password', async (done) => {
     await request(server)
-      .post('/signup')
+      .post('/api/user/add')
       .send(mockUserTemplates.mockShortPasswordUser)
       .expect(400)
       .then((response) => {
@@ -53,9 +53,9 @@ describe('test user routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /signup Reject signup user with invalid input', (done) => {
+  test('POST /api/user/add Reject signup user with invalid input', (done) => {
     request(server)
-      .post('/signup')
+      .post('/api/user/add')
       .send()
       .expect(400)
       .then((response) => {
@@ -65,14 +65,15 @@ describe('test user routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /signup Nominal email', async (done) => {
+  test('POST /api/user/add Nominal email', async (done) => {
     await request(server)
-      .post('/signup')
+      .post('/api/user/add')
       .send(mockUserTemplates.mockUser)
+      .expect(201)
       .catch(err => done(err));
 
     request(server)
-      .post('/user')
+      .get('/api/user')
       .send({ email: mockUserTemplates.mockUser.email })
       .expect(200)
       .then(response => {
@@ -83,9 +84,9 @@ describe('test user routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /signup Reject get user with empty email', (done) => {
+  test('POST /api/user/add Reject get user with empty email', (done) => {
     request(server)
-      .post('/user')
+      .get('/api/user')
       .send({ email: mockUserTemplates.mockEmptyEmailUser.email })
       .expect(400)
       .then(response => {
@@ -95,9 +96,9 @@ describe('test user routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /signup Reject get user with invalid input', (done) => {
+  test('POST /api/user/add Reject get user with invalid input', (done) => {
     request(server)
-      .post('/user')
+      .get('/api/user')
       .send()
       .expect(400)
       .then((response) => {
@@ -107,9 +108,9 @@ describe('test user routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /signup Reject double sign up', (done) => {
+  test('POST /api/user/add Reject double sign up', (done) => {
     request(server)
-      .post('/signup')
+      .post('/api/user/add')
       .send(mockUserTemplates.mockUser)
       .expect(400)
       .then((response) => {
@@ -119,9 +120,9 @@ describe('test user routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /signup Reject delete user with invalid input', (done) => {
+  test('POST /api/user/add Reject delete user with invalid input', (done) => {
     request(server)
-      .post('/signout')
+      .delete('/api/user/delete')
       .send()
       .expect(400)
       .then((response) => {
@@ -131,9 +132,9 @@ describe('test user routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /signup Reject delete user with invalid email', (done) => {
+  test('POST /api/user/add Reject delete user with invalid email', (done) => {
     request(server)
-      .post('/signout')
+      .delete('/api/user/delete')
       .send({ email: mockUserTemplates.mockFakeEmailUser.email })
       .expect(400)
       .then((response) => {
@@ -145,7 +146,7 @@ describe('test user routes', () => {
 
   test('POST /signout Remove user from database', async (done) => {
     await request(server)
-      .post('/signout')
+      .delete('/api/user/delete')
       .send({ email: mockUserTemplates.mockUser.email })
       .expect(200)
       .then((response) => {
@@ -154,7 +155,7 @@ describe('test user routes', () => {
       .catch(err => done(err));
 
     request(server)
-      .post('/user')
+      .get('/api/user')
       .send({ email: mockUserTemplates.mockUser.email })
       .expect(200)
       .then(response => {
@@ -177,9 +178,9 @@ describe('test associations routes', () => {
     done();
   });
 
-  test('POST /api/add_association Should reject if input not a string', async (done) => {
+  test('POST /api/association/add Should reject if input not a string', async (done) => {
     await request(server)
-      .post('/api/add_association')
+      .post('/api/association/add')
       .send(mockAssociationTemplates.mockAssociationNameNotAString)
       .expect(400)
       .then(response => {
@@ -189,9 +190,9 @@ describe('test associations routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /api/add_association Should reject if input is empty', async (done) => {
+  test('POST /api/association/add Should reject if input is empty', async (done) => {
     await request(server)
-      .post('/api/add_association')
+      .post('/api/association/add')
       .send(mockAssociationTemplates.mockAssociationEmptyName)
       .expect(400)
       .then(response => {
@@ -201,9 +202,9 @@ describe('test associations routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /api/add_association Should reject if invalid email', async (done) => {
+  test('POST /api/association/add Should reject if invalid email', async (done) => {
     await request(server)
-      .post('/api/add_association')
+      .post('/api/association/add')
       .send(mockAssociationTemplates.mockAssociationFakeEmail)
       .expect(400)
       .then(response => {
@@ -213,10 +214,11 @@ describe('test associations routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /api/add_association', async (done) => {
+  test('POST /api/association/add', async (done) => {
     await request(server)
-      .post('/api/add_association')
-      .send(mockAssociationTemplates.mockAssociation);
+      .post('/api/association/add')
+      .send(mockAssociationTemplates.mockAssociation)
+      .expect(201);
 
     request(server)
       .get('/api/associations')
@@ -228,9 +230,9 @@ describe('test associations routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /api/update_association Should reject if input not a string', async (done) => {
+  test('POST /api/association/update Should reject if input not a string', async (done) => {
     await request(server)
-      .post('/api/update_association')
+      .patch('/api/association/update')
       .send(mockAssociationTemplates.mockAssociationNameNotAString)
       .expect(400)
       .then(response => {
@@ -240,9 +242,9 @@ describe('test associations routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /api/update_association Should reject if input is empty', async (done) => {
+  test('POST /api/association/update Should reject if input is empty', async (done) => {
     await request(server)
-      .post('/api/update_association')
+      .patch('/api/association/update')
       .send(mockAssociationTemplates.mockAssociationEmptyName)
       .expect(400)
       .then(response => {
@@ -252,9 +254,9 @@ describe('test associations routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /api/update_association', (done) => {
+  test('POST /api/association/update', (done) => {
     request(server)
-      .post('/api/update_association')
+      .patch('/api/association/update')
       .send({ name: mockAssociationTemplates.mockAssociation.name, continent: 'Worldwide', country: 'Worldwide' })
       .expect(200)
       .then(() => {
@@ -262,9 +264,9 @@ describe('test associations routes', () => {
       });
   });
 
-  test('POST /api/delete_association Should reject if input not a string', async (done) => {
+  test('POST /api/association/delete Should reject if input not a string', async (done) => {
     await request(server)
-      .post('/api/delete_association')
+      .delete('/api/association/delete')
       .send(mockAssociationTemplates.mockAssociationNameNotAString)
       .expect(400)
       .then(response => {
@@ -274,9 +276,9 @@ describe('test associations routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /api/delete_association Should reject if input is empty', async (done) => {
+  test('POST /api/association/delete Should reject if input is empty', async (done) => {
     await request(server)
-      .post('/api/delete_association')
+      .delete('/api/association/delete')
       .send(mockAssociationTemplates.mockAssociationEmptyName)
       .expect(400)
       .then(response => {
@@ -286,9 +288,9 @@ describe('test associations routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /api/delete_association', async (done) => {
+  test('POST /api/association/delete', async (done) => {
     await request(server)
-      .post('/api/delete_association')
+      .delete('/api/association/delete')
       .send({ name: mockAssociationTemplates.mockAssociation.name })
       .expect(200);
 
@@ -304,11 +306,11 @@ describe('test associations routes', () => {
 });
 
 describe('test messages routes', () => {
-  test('POST /message', (done) => {
+  test('POST /api/message/add', (done) => {
     request(server)
-      .post('/message')
+      .post('/api/message/add')
       .send(mockMessage)
-      .expect(200)
+      .expect(201)
       .then((response) => {
         expect(response.body.msg).toEqual("Message sent successfully");
         done();

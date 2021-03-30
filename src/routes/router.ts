@@ -6,12 +6,12 @@ import { sendMessage } from '../controllers/contactMessage.controller';
 let router: Router = Router();
 
 router.get('/api/associations', getAssociations);
-router.post('/api/add_association', addAssociation);
-router.post('/api/delete_association', deleteAssociation);
-router.post('/api/update_association', updateAssociation);
-router.post('/user', getUser);
-router.post('/signup', signUp);
-router.post('/signout', deleteUser);
-router.post('/message', sendMessage);
+router.post('/api/association/add', addAssociation);
+router.delete('/api/association/delete', deleteAssociation);
+router.patch('/api/association/update', updateAssociation);
+router.get('/api/user', getUser);
+router.post('/api/user/add', signUp);
+router.delete('/api/user/delete', deleteUser);
+router.post('/api/message/add', sendMessage);
 
 export = router;

@@ -1,10 +1,14 @@
 import { Request, Response } from 'express';
-import { serviceGetUser, serviceSignUp, serviceDeleteUser } from '../services/user.service';
+import { serviceGetUser, serviceRegister, serviceDeleteUser, serviceLogin } from '../services/user.service';
 import isEmpty from 'validator/lib/isEmpty'
 import isEmail from 'validator/lib/isEmail';
 import isLength from 'validator/lib/isLength';
+// import signJWT from '../functions/signJWT';
+import jwt from 'jsonwebtoken';
 
-export const signUp = async (req: Request, res: Response) => {
+const jwtSecret = process.env.JWT_KEY || 'secret';
+
+const register = async (req: Request, res: Response) => {
 	if (typeof(req.body.email) !== 'string') {
 		return res.status(400).json({ status: 400, msg: 'Input must be a string' });
 	}
@@ -16,14 +20,28 @@ export const signUp = async (req: Request, res: Response) => {
 	}
 	let query = req.body;
 	try {
-		await serviceSignUp(query);
+		await serviceRegister(query);
 		return res.status(201).json({ status: 201, msg: 'User created' });
 	} catch (e) {
 		return res.status(400).json({ status: 400, msg: e.message });
 	}
 }
 
-export const getUser = async (req: Request, res: Response) => {
+const login = async (req: Request, res: Response) => {
+	let query = req.body;
+	try {
+		if (!await serviceLogin(query)) {
+			return res.status(400).json({ status: 400, msg: 'Unauthorized' });
+		}
+		const token2 = jwt.sign({ email: req.body.email }, jwtSecret, { algorithm: 'HS256', expiresIn: 600 });
+		return res.status(200).json({ status: 200, msg: 'User authorized', token: token2, user: req.body.email });
+		
+	} catch (e) {
+		return res.status(400).json({ status: 400, msg: e.message });
+	}
+}
+
+const getUser = async (req: Request, res: Response) => {
 	if (typeof(req.body.email) !== 'string') {
 		return res.status(400).json({ status: 400, msg: 'Input must be a string' });
 	}
@@ -42,7 +60,7 @@ export const getUser = async (req: Request, res: Response) => {
 	}
 }
 
-export const deleteUser = async (req: Request, res: Response) => {
+const deleteUser = async (req: Request, res: Response) => {
 	if (typeof(req.body.email) !== 'string') {
 		return res.status(400).json({ status: 400, msg: 'Input must be a string' });
 	}
@@ -56,4 +74,11 @@ export const deleteUser = async (req: Request, res: Response) => {
 	} catch (e) {
 		return res.status(400).json({ status: 400, msg: e.message });
 	}
+}
+
+export default {
+	register,
+	login,
+	getUser,
+	deleteUser
 }

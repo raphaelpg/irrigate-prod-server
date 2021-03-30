@@ -1,0 +1,44 @@
+GET http://localhost:8080/api/associations
+
+###
+
+POST http://localhost:8080/api/user/add
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "test1"
+}
+
+###
+
+GET http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+  "email": "test@test.com"
+}
+
+###
+
+POST http://localhost:8080/api/user/login
+Content-Type: application/json
+
+{
+  "email": "test@test.com",
+  "password": "test1"
+}
+
+###
+
+DELETE http://localhost:8080/api/user/delete
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2MTcxMjc4ODksImV4cCI6MTYxNzEyODQ4OX0.xbJFu5Hj1jddfAQjdOzu9cyuVR4Z1N-Mjs0deouz9x8
+
+{
+  "email": "test@test.com"
+}
+
+###
+
+GET http://localhost:8080/api/user/validate 
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2MTcxMjM4MzksImV4cCI6MTYxNzEyNDQzOX0.N24HVwhF8AC7jgxqXoQbUuWW5foKcpyJbEwdXiHH7uQ

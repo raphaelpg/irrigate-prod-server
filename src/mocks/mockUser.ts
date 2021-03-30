@@ -23,6 +23,11 @@ const mockUserTemplates = {
     email: "mock@mock.com",
     password: "a"
   },
+
+  mockUser2: {
+    email: "mock2@mock.com",
+    password: "mockPassword"
+  },
 }
 
 export default mockUserTemplates;

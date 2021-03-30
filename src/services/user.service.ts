@@ -1,6 +1,7 @@
 import { insert, find, remove } from './dbAccessFunctions';
 import IUser from '../interfaces/user';
-import hashString from '../external_functions/hash';
+import hashString from '../functions/hash';
+import bcrypt from 'bcrypt';
 
 const usersCollection = process.env.MONGO_USERS_COLLECTION!;
 
@@ -9,7 +10,7 @@ export const findUserByEmail: (email: string) => Promise<IUser[]> = async (email
   return result;
 }
 
-export const serviceSignUp = async (query: IUser) => {
+export const serviceRegister = async (query: IUser) => {
   const result = await findUserByEmail(query.email);
   if (result.length !== 0) {
     throw Error('Email address already used');
@@ -25,7 +26,9 @@ export const serviceSignUp = async (query: IUser) => {
 
 export const serviceGetUser = async (email: string) => {
   try {
-    return await find(usersCollection, { email });
+    const user = await find(usersCollection, { email });
+    delete user[0].password;
+    return user;
   } catch (e) {
     throw Error('Error while retrieving user');
   }
@@ -36,5 +39,18 @@ export const serviceDeleteUser = async (email: string) => {
     return await remove(usersCollection, { email });
   } catch (e) {
     throw Error('Error while deleting user');
+  }
+}
+
+export const serviceLogin = async (query: IUser) => {
+  const users = await findUserByEmail(query.email);
+  if (users.length === 0) {
+    throw Error("Can't find user");
+  }
+  try {
+    const compare = await bcrypt.compare(query.password, users[0].password)
+    return compare;
+  } catch {
+    throw Error('Error when trying to login')
   }
 }

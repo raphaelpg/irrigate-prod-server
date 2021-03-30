@@ -84,7 +84,7 @@ describe('test user routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /api/user/add Reject get user with empty email', (done) => {
+  test('GET /api/user Reject get user with empty email', (done) => {
     request(server)
       .get('/api/user')
       .send({ email: mockUserTemplates.mockEmptyEmailUser.email })
@@ -96,13 +96,25 @@ describe('test user routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /api/user/add Reject get user with invalid input', (done) => {
+  test('GET /api/user Reject get user with invalid input', (done) => {
     request(server)
       .get('/api/user')
       .send()
       .expect(400)
       .then((response) => {
         expect(response.body.msg).toEqual('Input must be a string');
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+  test("GET /api/user Reject get user that doesn't exists", (done) => {
+    request(server)
+      .get('/api/user')
+      .send(mockUserTemplates.mockUser2)
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toEqual('Error while retrieving user');
         done();
       })
       .catch(err => done(err));
@@ -120,50 +132,140 @@ describe('test user routes', () => {
       .catch(err => done(err));
   });
 
-  test('POST /api/user/add Reject delete user with invalid input', (done) => {
-    request(server)
-      .delete('/api/user/delete')
-      .send()
-      .expect(400)
-      .then((response) => {
-        expect(response.body.msg).toEqual('Input must be a string');
-        done();
-      })
-      .catch(err => done(err));
-  });
-
-  test('POST /api/user/add Reject delete user with invalid email', (done) => {
-    request(server)
-      .delete('/api/user/delete')
-      .send({ email: mockUserTemplates.mockFakeEmailUser.email })
-      .expect(400)
-      .then((response) => {
-        expect(response.body.msg).toEqual('Invalid email input');
-        done();
-      })
-      .catch(err => done(err));
-  });
-
-  test('POST /signout Remove user from database', async (done) => {
+  test("POST /api/user/login Reject user login that doesn't exists", async (done) => {
     await request(server)
-      .delete('/api/user/delete')
-      .send({ email: mockUserTemplates.mockUser.email })
-      .expect(200)
-      .then((response) => {
-        expect(response.body.msg).toEqual("User deleted");
-      })
-      .catch(err => done(err));
+    .post('/api/user/login')
+    .send(mockUserTemplates.mockUser2)
+    .expect(400)
+    .then(response => {
+      expect(response.body.msg).toEqual("Can't find user");
+      done();
+    })
+    .catch(err => done(err));
+  });
+    
+  test('POST /api/user/delete Reject delete user with invalid input', async (done) => {
+    let token = '';
 
-    request(server)
-      .get('/api/user')
-      .send({ email: mockUserTemplates.mockUser.email })
-      .expect(200)
-      .then(response => {
-        expect(response.body.data.length).toEqual(0);
-        expect(response.body.msg).toEqual("User not found");
-        done();
-      })
-      .catch(err => done(err));
+    await request(server)
+    .post('/api/user/login')
+    .send(mockUserTemplates.mockUser)
+    .expect(200)
+    .then(response => {
+      expect(response.body.msg).toEqual('User authorized')
+      token =  'Bearer ' + response.body.token
+    })
+    .then(() => {
+      request(server)
+        .delete('/api/user/delete')
+        .set({'Authorization': token, 'Content-Type': 'application/json'})
+        .send()
+        .expect(400)
+        .then((res) => {
+          expect(res.body.msg).toEqual('Input must be a string');
+          done()
+        })
+        .catch(err => done(err));
+    })
+  });
+
+  test('POST /api/user/delete Reject delete user with invalid email', async (done) => {
+    let token = '';
+
+    await request(server)
+    .post('/api/user/login')
+    .send(mockUserTemplates.mockUser)
+    .expect(200)
+    .then(response => {
+      expect(response.body.msg).toEqual('User authorized')
+      token =  'Bearer ' + response.body.token
+    })
+    .then(() => {
+      request(server)
+        .delete('/api/user/delete')
+        .set({'Authorization': token, 'Content-Type': 'application/json'})
+        .send({ email: mockUserTemplates.mockFakeEmailUser.email })
+        .expect(400)
+        .then((res) => {
+          expect(res.body.msg).toEqual('Invalid email input');
+          done()
+        })
+        .catch(err => done(err));
+    })
+  });
+
+  test('POST /api/user/delete Reject delete user with fake token', async (done) => {
+    let token = '';
+
+    await request(server)
+    .post('/api/user/login')
+    .send(mockUserTemplates.mockUser)
+    .expect(200)
+    .then(response => {
+      expect(response.body.msg).toEqual('User authorized')
+      token =  'Bearer ' + 'faketoken123456'
+    })
+    .then(() => {
+      request(server)
+        .delete('/api/user/delete')
+        .set({'Authorization': token, 'Content-Type': 'application/json'})
+        .send({ email: mockUserTemplates.mockUser.email })
+        .expect(404)
+        .then((res) => {
+          expect(res.body.msg).toEqual('jwt malformed');
+          done()
+        })
+        .catch(err => done(err));
+    })
+  });
+
+  test('POST /api/user/delete Reject delete user without token', async (done) => {
+    let token = '';
+
+    await request(server)
+    .post('/api/user/login')
+    .send(mockUserTemplates.mockUser)
+    .expect(200)
+    .then(response => {
+      expect(response.body.msg).toEqual('User authorized')
+    })
+    .then(() => {
+      request(server)
+        .delete('/api/user/delete')
+        .set({'Authorization': token, 'Content-Type': 'application/json'})
+        .send({ email: mockUserTemplates.mockUser.email })
+        .expect(401)
+        .then((res) => {
+          expect(res.body.msg).toEqual('Unauthorized');
+          done()
+        })
+        .catch(err => done(err));
+    })
+  });
+
+  test('POST /api/user/delete Remove user from database', async (done) => {
+    let token = '';
+
+    await request(server)
+    .post('/api/user/login')
+    .send(mockUserTemplates.mockUser)
+    .expect(200)
+    .then(response => {
+      expect(response.body.msg).toEqual('User authorized')
+      token =  'Bearer ' + response.body.token
+    })
+    .then(() => {
+      request(server)
+        .delete('/api/user/delete')
+        .set({'Authorization': token, 'Content-Type': 'application/json'})
+        .send({ email: mockUserTemplates.mockUser.email })
+        .expect(200)
+        .then((res) => {
+          expect(res.body.msg).toEqual("User deleted");
+          done();
+        })
+        .catch(err => done(err));
+    })
   });
 });
 

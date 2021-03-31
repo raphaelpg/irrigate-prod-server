@@ -1,40 +1,48 @@
-import { insert, find, remove, update } from './dbAccessFunctions';
+import dbAccessFunctions from '../functions/dbAccessFunctions';
+import config from '../config/config';
 import IAssociation from '../interfaces/association';
 
-const associationsCollection = process.env.MONGO_TEMPORARY_ASSOCIATIONS_COLLECTION!;
+const associationsCollection = config.mongo.associationsCollection;
 
-export const serviceGetAssociations = async () => {
+const serviceGetAssociations = async () => {
   try {
-    const associations = await find(associationsCollection, {});
+    const associations = await dbAccessFunctions.find(associationsCollection, {});
     return associations;
   } catch (e) {
     throw Error('Error retrieving associations from database');
   }
 };
 
-export const serviceAddAssociation = async (query: IAssociation) => {
+const serviceAddAssociation = async (query: IAssociation) => {
   try {
-    await insert(associationsCollection, { ...query });
+    await dbAccessFunctions.insert(associationsCollection, { ...query });
     return;
   } catch (e) {
     throw Error('Error on inserting association to database');
   }
 }
 
-export const serviceDeleteAssociation = async (name: string) => {
+const serviceDeleteAssociation = async (name: string) => {
   try {
-    await remove(associationsCollection, { name });
+    await dbAccessFunctions.remove(associationsCollection, { name });
     return;
   } catch (e) {
     throw Error('Error while deleting association');
   }
 }
 
-export const serviceUpdateAssociation = async (name: {}, query: {}) => {
+const serviceUpdateAssociation = async (name: {}, query: {}) => {
   try {
-    await update(associationsCollection, name, query);
+    await dbAccessFunctions.update(associationsCollection, name, query);
     return;
   } catch (e) {
     throw Error('Error while updating association'); 
   }
+}
+
+export default {
+  serviceGetAssociations,
+  serviceAddAssociation,
+  serviceDeleteAssociation,
+  serviceUpdateAssociation
 }

@@ -24,6 +24,11 @@ const mockUserTemplates = {
     password: "a"
   },
 
+  mockWrongPasswordUser: {
+    email: "mock@mock.com",
+    password: "mockPasswordX"
+  },
+
   mockUser2: {
     email: "mock2@mock.com",
     password: "mockPassword"

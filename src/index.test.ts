@@ -143,6 +143,18 @@ describe('test user routes', () => {
     })
     .catch(err => done(err));
   });
+
+  test("POST /api/user/login Reject user login with wrong password", async (done) => {
+    await request(server)
+    .post('/api/user/login')
+    .send(mockUserTemplates.mockWrongPasswordUser)
+    .expect(400)
+    .then(response => {
+      expect(response.body.msg).toEqual("Unauthorized");
+      done();
+    })
+    .catch(err => done(err));
+  });
     
   test('POST /api/user/delete Reject delete user with invalid input', async (done) => {
     let token = '';
@@ -234,6 +246,30 @@ describe('test user routes', () => {
         .delete('/api/user/delete')
         .set({'Authorization': token, 'Content-Type': 'application/json'})
         .send({ email: mockUserTemplates.mockUser.email })
+        .expect(401)
+        .then((res) => {
+          expect(res.body.msg).toEqual('Unauthorized');
+          done()
+        })
+        .catch(err => done(err));
+    })
+  });
+
+  test('POST /api/user/delete Reject delete another user', async (done) => {
+    let token = '';
+
+    await request(server)
+    .post('/api/user/login')
+    .send(mockUserTemplates.mockUser)
+    .expect(200)
+    .then(response => {
+      expect(response.body.msg).toEqual('User authorized')
+    })
+    .then(() => {
+      request(server)
+        .delete('/api/user/delete')
+        .set({'Authorization': token, 'Content-Type': 'application/json'})
+        .send({ email: mockUserTemplates.mockUser2.email })
         .expect(401)
         .then((res) => {
           expect(res.body.msg).toEqual('Unauthorized');

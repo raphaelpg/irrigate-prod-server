@@ -1,18 +1,14 @@
 import { Request, Response } from 'express';
 import userService from '../services/user.service';
 import tokenFunctions from '../functions/tokenFunctions';
-import isEmpty from 'validator/lib/isEmpty'
 import isEmail from 'validator/lib/isEmail';
 import isLength from 'validator/lib/isLength';
 
 const register = async (req: Request, res: Response) => {
-	if (typeof(req.body.email) !== 'string') {
-		return res.status(400).json({ status: 400, msg: 'Input must be a string' });
-	}
-	if (isEmpty(req.body.email) || !isEmail(req.body.email)) {
+	if (!isEmail(req.body.email)) {
 		return res.status(400).json({ status: 400, msg: 'Invalid email input' });
 	}
-	if (isEmpty(req.body.password) ||	!isLength(req.body.password, {min:5, max:undefined})) {
+	if (!isLength(req.body.password, {min:5, max:undefined})) {
 		return res.status(400).json({ status: 400, msg: 'Invalid password input' });
 	}
 	let query = req.body;
@@ -30,8 +26,8 @@ const login = async (req: Request, res: Response) => {
 		if (!await userService.serviceLogin(query)) {
 			return res.status(400).json({ status: 400, msg: 'Unauthorized' });
 		}
-		const token2 = tokenFunctions.sign(query);
-		return res.status(200).json({ status: 200, msg: 'User authorized', token: token2, user: req.body.email });
+		const token = tokenFunctions.sign(query);
+		return res.status(200).json({ status: 200, msg: 'User authorized', token: token, user: req.body.email });
 		
 	} catch (e) {
 		return res.status(400).json({ status: 400, msg: e.message });
@@ -39,10 +35,7 @@ const login = async (req: Request, res: Response) => {
 }
 
 const getUser = async (req: Request, res: Response) => {
-	if (typeof(req.body.email) !== 'string') {
-		return res.status(400).json({ status: 400, msg: 'Input must be a string' });
-	}
-	if (isEmpty(req.body.email) || !isEmail(req.body.email)) {
+	if (!isEmail(req.body.email)) {
 		return res.status(400).json({ status: 400, msg: 'Invalid email input' });
 	}
 	let query = req.body;
@@ -55,10 +48,7 @@ const getUser = async (req: Request, res: Response) => {
 }
 
 const deleteUser = async (req: Request, res: Response) => {
-	if (typeof(req.body.email) !== 'string') {
-		return res.status(400).json({ status: 400, msg: 'Input must be a string' });
-	}
-	if (isEmpty(req.body.email) || !isEmail(req.body.email)) {
+	if (!isEmail(req.body.email)) {
 		return res.status(400).json({ status: 400, msg: 'Invalid email input' });
 	}
 	let query = req.body;

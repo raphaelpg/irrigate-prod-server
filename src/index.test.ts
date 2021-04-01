@@ -2,7 +2,7 @@ import request from 'supertest';
 import { server } from './index';
 import mockAssociationTemplates from './mocks/mockAssociation';
 import mockUserTemplates from './mocks/mockUser';
-import mockMessage from './mocks/mockMessage';
+import mockMessagesTemplate from './mocks/mockMessage';
 
 describe('test user routes', () => {
   test('POST /api/user/add Fake email', async (done) => {
@@ -23,7 +23,7 @@ describe('test user routes', () => {
       .send(mockUserTemplates.mockEmptyEmailUser)
       .expect(400)
       .then((response) => {
-        expect(response.body.msg).toEqual('Invalid email input');
+        expect(response.body.msg).toEqual('Error in request field');
         done();
       })
       .catch(err => done(err));
@@ -35,7 +35,7 @@ describe('test user routes', () => {
       .send(mockUserTemplates.mockEmptyPasswordUser)
       .expect(400)
       .then((response) => {
-        expect(response.body.msg).toEqual('Invalid password input');
+        expect(response.body.msg).toEqual('Error in request field');
         done();
       })
       .catch(err => done(err));
@@ -59,7 +59,7 @@ describe('test user routes', () => {
       .send()
       .expect(400)
       .then((response) => {
-        expect(response.body.msg).toEqual('Input must be a string');
+        expect(response.body.msg).toEqual('Error in request field');
         done();
       })
       .catch(err => done(err));
@@ -90,7 +90,7 @@ describe('test user routes', () => {
       .send({ email: mockUserTemplates.mockEmptyEmailUser.email })
       .expect(400)
       .then(response => {
-        expect(response.body.msg).toEqual('Invalid email input');
+        expect(response.body.msg).toEqual('Error in request field');
         done();
       })
       .catch(err => done(err));
@@ -102,7 +102,7 @@ describe('test user routes', () => {
       .send()
       .expect(400)
       .then((response) => {
-        expect(response.body.msg).toEqual('Input must be a string');
+        expect(response.body.msg).toEqual('Error in request field');
         done();
       })
       .catch(err => done(err));
@@ -174,7 +174,7 @@ describe('test user routes', () => {
         .send()
         .expect(400)
         .then((res) => {
-          expect(res.body.msg).toEqual('Input must be a string');
+          expect(res.body.msg).toEqual('Error in request field');
           done()
         })
         .catch(err => done(err));
@@ -322,7 +322,7 @@ describe('test associations routes', () => {
       .send(mockAssociationTemplates.mockAssociationNameNotAString)
       .expect(400)
       .then(response => {
-        expect(response.body.msg).toEqual('Input must be a string');
+        expect(response.body.msg).toEqual("Error in request field");
         done();
       })
       .catch(err => done(err));
@@ -334,7 +334,7 @@ describe('test associations routes', () => {
       .send(mockAssociationTemplates.mockAssociationEmptyName)
       .expect(400)
       .then(response => {
-        expect(response.body.msg).toEqual('Required input missing');
+        expect(response.body.msg).toEqual("Error in request field");
         done();
       })
       .catch(err => done(err));
@@ -374,7 +374,7 @@ describe('test associations routes', () => {
       .send(mockAssociationTemplates.mockAssociationNameNotAString)
       .expect(400)
       .then(response => {
-        expect(response.body.msg).toEqual('Input must be a string');
+        expect(response.body.msg).toEqual('Error in request field');
         done();
       })
       .catch(err => done(err));
@@ -386,7 +386,7 @@ describe('test associations routes', () => {
       .send(mockAssociationTemplates.mockAssociationEmptyName)
       .expect(400)
       .then(response => {
-        expect(response.body.msg).toEqual('Required input missing');
+        expect(response.body.msg).toEqual('Error in request field');
         done();
       })
       .catch(err => done(err));
@@ -408,7 +408,7 @@ describe('test associations routes', () => {
       .send(mockAssociationTemplates.mockAssociationNameNotAString)
       .expect(400)
       .then(response => {
-        expect(response.body.msg).toEqual('Input must be a string');
+        expect(response.body.msg).toEqual('Error in request field');
         done();
       })
       .catch(err => done(err));
@@ -420,7 +420,7 @@ describe('test associations routes', () => {
       .send(mockAssociationTemplates.mockAssociationEmptyName)
       .expect(400)
       .then(response => {
-        expect(response.body.msg).toEqual('Required input missing');
+        expect(response.body.msg).toEqual('Error in request field');
         done();
       })
       .catch(err => done(err));
@@ -444,13 +444,37 @@ describe('test associations routes', () => {
 });
 
 describe('test messages routes', () => {
-  test('POST /api/message/add', (done) => {
+  test('POST /api/message/add Should post a message properly', (done) => {
     request(server)
       .post('/api/message/add')
-      .send(mockMessage)
+      .send(mockMessagesTemplate.mockMessage)
       .expect(201)
       .then((response) => {
         expect(response.body.msg).toEqual("Message sent successfully");
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+  test('POST /api/message/add Should reject if message is empty', (done) => {
+    request(server)
+      .post('/api/message/add')
+      .send(mockMessagesTemplate.emptyMockMessage)
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toEqual("Error in request field");
+        done();
+      })
+      .catch(err => done(err));
+  });
+
+  test('POST /api/message/add Should reject if message not a string', (done) => {
+    request(server)
+      .post('/api/message/add')
+      .send(mockMessagesTemplate.notStringMockMessage)
+      .expect(400)
+      .then((response) => {
+        expect(response.body.msg).toEqual("Error in request field");
         done();
       })
       .catch(err => done(err));

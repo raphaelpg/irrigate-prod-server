@@ -1,3 +1,7 @@
+const SERVER = {
+  port: process.env.PORT || 8080,
+}
+
 const MONGO = {
   uri: process.env.MONGO_URI!,
   dbName: process.env.MONGO_DB_NAME!,
@@ -12,6 +16,7 @@ const JWT = {
 }
 
 const config = {
+  server: SERVER,
   mongo: MONGO,
   jwt: JWT,
 }

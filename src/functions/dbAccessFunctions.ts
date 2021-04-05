@@ -44,5 +44,5 @@ export default {
   find,
   insert,
   remove,
-  update
+  update,
 }

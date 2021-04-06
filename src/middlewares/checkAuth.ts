@@ -13,11 +13,9 @@ const checkAuth = (req: Request, res: Response, next: NextFunction) => {
           next();
       }
     });
-  }
-  else
-  {
-    return res.status(401).json({ msg: 'Unauthorized' });
-  }
+  } else {
+    return res.status(401).json({ msg: "Unauthorized" });
+  };
 };
 
 export default checkAuth;

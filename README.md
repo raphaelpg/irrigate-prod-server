@@ -20,10 +20,10 @@ Structure:
 
 The routes are tested with Jest and Supertest with following coverage:  
 
-93.55% Statements 290/310  
-88.89% Branches 48/54  
-100% Functions 60/60  
-92.83% Lines 259/279  
+94.14% Statements 289/307  
+90.38% Branches 47/52  
+100% Functions 61/61  
+93.48% Lines 258/276  
 
 
 ## Built With  

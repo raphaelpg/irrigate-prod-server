@@ -6,13 +6,12 @@ const contactMessagesCollection = config.mongo.contactMessagesCollection;
 
 const serviceContactMessage = async (query: IContactMessage) => {
 	try {
-		await dbAccessFunctions.insert(contactMessagesCollection, { ...query });
-		return;
+		return await dbAccessFunctions.insert(contactMessagesCollection, { ...query });
 	} catch (e) {
-		throw Error('Error on inserting message');
-	}
-}
+		throw Error("Error on inserting message");
+	};
+};
 
 export default {
 	serviceContactMessage
-}
+};

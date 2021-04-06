@@ -9,8 +9,8 @@ const serviceGetAssociations = async () => {
     const associations = await dbAccessFunctions.find(associationsCollection, {});
     return associations;
   } catch (e) {
-    throw Error('Error retrieving associations from database');
-  }
+    throw Error("Error retrieving associations from database");
+  };
 };
 
 const serviceAddAssociation = async (query: IAssociation) => {
@@ -18,31 +18,31 @@ const serviceAddAssociation = async (query: IAssociation) => {
     await dbAccessFunctions.insert(associationsCollection, { ...query });
     return;
   } catch (e) {
-    throw Error('Error on inserting association to database');
-  }
-}
+    throw Error("Error on inserting association to database");
+  };
+};
 
 const serviceDeleteAssociation = async (name: string) => {
   try {
     await dbAccessFunctions.remove(associationsCollection, { name });
     return;
   } catch (e) {
-    throw Error('Error while deleting association');
-  }
-}
+    throw Error("Error while deleting association");
+  };
+};
 
 const serviceUpdateAssociation = async (name: {}, query: {}) => {
   try {
     await dbAccessFunctions.update(associationsCollection, name, query);
     return;
   } catch (e) {
-    throw Error('Error while updating association'); 
-  }
-}
+    throw Error("Error while updating association"); 
+  };
+};
 
 export default {
   serviceGetAssociations,
   serviceAddAssociation,
   serviceDeleteAssociation,
   serviceUpdateAssociation
-}
+};

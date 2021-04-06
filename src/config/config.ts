@@ -1,5 +1,3 @@
-import 'dotenv/config';
-
 const SERVER = {
   port: process.env.PORT || 8080,
 }

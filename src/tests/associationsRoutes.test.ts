@@ -20,7 +20,7 @@ describe('test associations routes', () => {
       .send(mockAssociationTemplates.mockAssociationNameNotAString)
       .expect(400)
       .then(response => {
-        expect(response.body.msg).toEqual("Error in request field");
+        expect(response.body.msg).toEqual("Request field must be a string");
         done();
       })
       .catch(err => done(err));
@@ -32,7 +32,7 @@ describe('test associations routes', () => {
       .send(mockAssociationTemplates.mockAssociationEmptyName)
       .expect(400)
       .then(response => {
-        expect(response.body.msg).toEqual("Error in request field");
+        expect(response.body.msg).toEqual("Requested field can't be empty");
         done();
       })
       .catch(err => done(err));
@@ -72,7 +72,7 @@ describe('test associations routes', () => {
       .send(mockAssociationTemplates.mockAssociationNameNotAString)
       .expect(400)
       .then(response => {
-        expect(response.body.msg).toEqual('Error in request field');
+        expect(response.body.msg).toEqual('Request field must be a string');
         done();
       })
       .catch(err => done(err));
@@ -84,7 +84,7 @@ describe('test associations routes', () => {
       .send(mockAssociationTemplates.mockAssociationEmptyName)
       .expect(400)
       .then(response => {
-        expect(response.body.msg).toEqual('Error in request field');
+        expect(response.body.msg).toEqual("Requested field can't be empty");
         done();
       })
       .catch(err => done(err));
@@ -106,7 +106,7 @@ describe('test associations routes', () => {
       .send(mockAssociationTemplates.mockAssociationNameNotAString)
       .expect(400)
       .then(response => {
-        expect(response.body.msg).toEqual('Error in request field');
+        expect(response.body.msg).toEqual('Request field must be a string');
         done();
       })
       .catch(err => done(err));
@@ -118,7 +118,7 @@ describe('test associations routes', () => {
       .send(mockAssociationTemplates.mockAssociationEmptyName)
       .expect(400)
       .then(response => {
-        expect(response.body.msg).toEqual('Error in request field');
+        expect(response.body.msg).toEqual("Requested field can't be empty");
         done();
       })
       .catch(err => done(err));

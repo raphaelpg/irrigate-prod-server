@@ -42,3 +42,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAd
 
 GET http://localhost:8080/api/user/validate 
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAdGVzdC5jb20iLCJpYXQiOjE2MTcxMjM4MzksImV4cCI6MTYxNzEyNDQzOX0.N24HVwhF8AC7jgxqXoQbUuWW5foKcpyJbEwdXiHH7uQ
+
+
+###
+
+POST http://localhost:8080/api/message/add
+Content-Type: application/json
+
+{
+  "name": "mockName",
+  "email": "mock@mock.com",
+  "message": "mock message"
+}

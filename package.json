@@ -1,6 +1,6 @@
 {
-  "name": "irrigate-v3",
-  "version": "1.0.0",
+  "name": "irrigate-server",
+  "version": "0.2.0",
   "description": "irrigate web app server",
   "main": "index.js",
   "scripts": {
@@ -24,7 +24,7 @@
     "helmet": "^4.4.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.6.5",
-    "pm2": "^4.5.5",
+    "pm2": "^4.5.6",
     "validator": "^13.5.2"
   },
   "devDependencies": {

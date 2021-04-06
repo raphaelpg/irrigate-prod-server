@@ -22,7 +22,7 @@ describe('test user routes', () => {
       .send(mockUserTemplates.mockEmptyEmailUser)
       .expect(400)
       .then((response) => {
-        expect(response.body.msg).toEqual('Error in request field');
+        expect(response.body.msg).toEqual("Requested field can't be empty");
         done();
       })
       .catch(err => done(err));
@@ -34,7 +34,7 @@ describe('test user routes', () => {
       .send(mockUserTemplates.mockEmptyPasswordUser)
       .expect(400)
       .then((response) => {
-        expect(response.body.msg).toEqual('Error in request field');
+        expect(response.body.msg).toEqual("Requested field can't be empty");
         done();
       })
       .catch(err => done(err));
@@ -58,7 +58,7 @@ describe('test user routes', () => {
       .send()
       .expect(400)
       .then((response) => {
-        expect(response.body.msg).toEqual('Error in request field');
+        expect(response.body.msg).toEqual("Request body is empty");
         done();
       })
       .catch(err => done(err));
@@ -89,7 +89,7 @@ describe('test user routes', () => {
       .send({ email: mockUserTemplates.mockEmptyEmailUser.email })
       .expect(400)
       .then(response => {
-        expect(response.body.msg).toEqual('Error in request field');
+        expect(response.body.msg).toEqual("Requested field can't be empty");
         done();
       })
       .catch(err => done(err));
@@ -101,7 +101,7 @@ describe('test user routes', () => {
       .send()
       .expect(400)
       .then((response) => {
-        expect(response.body.msg).toEqual('Error in request field');
+        expect(response.body.msg).toEqual("Request body is empty");
         done();
       })
       .catch(err => done(err));
@@ -173,7 +173,7 @@ describe('test user routes', () => {
         .send()
         .expect(400)
         .then((res) => {
-          expect(res.body.msg).toEqual('Error in request field');
+          expect(res.body.msg).toEqual("Request body is empty");
           done()
         })
         .catch(err => done(err));

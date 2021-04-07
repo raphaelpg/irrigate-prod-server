@@ -6,7 +6,7 @@ POST http://localhost:8080/api/user/add
 Content-Type: application/json
 
 {
-  "email": "test@test.com",
+  "email": "limited@test.com",
   "password": "test1"
 }
 
@@ -16,7 +16,7 @@ GET http://localhost:8080/api/user
 Content-Type: application/json
 
 {
-  "email": "test@test.com"
+  "email": "limited@test.com"
 }
 
 ###

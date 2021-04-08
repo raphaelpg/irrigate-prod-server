@@ -1,7 +1,7 @@
 import { MongoClient, Db } from 'mongodb';
 import config from '../config/config';
 
-const url: string = config.mongo.uri;
+const url: string = config.mongo.completeUri;
 const dbName: string = config.mongo.dbName;
 const client = new MongoClient(url, { useNewUrlParser: true,	useUnifiedTopology: true });
 

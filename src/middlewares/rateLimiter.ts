@@ -1,14 +1,55 @@
-import rateLimit from 'express-rate-limit';
+import { Request, Response, NextFunction } from 'express';
+import { MongoClient } from 'mongodb';
+import config from '../config/config';
+import { RateLimiterMongo } from 'rate-limiter-flexible';
 
-export const apiLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 60 minutes
-  max: 30
-});
+const mongoOpts = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+};
 
-export const restrictiveLimiter = rateLimit({
-  windowMs: 30 * 60 * 1000, // 1 hour window
-  max: 5, // start blocking after 5 requests
-  message:
-    "Too many requests from this IP, please try again after half an hour"
-});
+const mongoConn = MongoClient.connect(
+  config.mongo.completeUri,
+  mongoOpts
+);
 
+const opts10 = {
+  storeClient: mongoConn,
+  dbName: 'IrrigateV2',
+  tableName: 'users-rate-limit',
+  points: 3,
+  duration: 60 * 2,
+  blockDuration: 60 * 10,
+};
+
+const rateLimiter10min = new RateLimiterMongo(opts10);
+
+export const rateLimiterSpam = (req: Request, res: Response, next: NextFunction) => {
+  rateLimiter10min.consume(req.ip)
+  .then(() => {
+    next();
+  })
+  .catch(() => {
+    res.status(429).send('Too Many Requests');
+  });
+};
+
+const opts1 = {
+  storeClient: mongoConn,
+  dbName: 'IrrigateV2',
+  tableName: 'users-rate-limit-ddos',
+  points: 5,
+  duration: 1,
+};
+
+const rateLimiter1sec = new RateLimiterMongo(opts1);
+
+export const rateLimiterDDos = (req: Request, res: Response, next: NextFunction) => {
+  rateLimiter1sec.consume(req.ip)
+    .then(() => {
+      next();
+    })
+    .catch(() => {
+      res.status(429).send('Too Many Requests');
+    });
+};

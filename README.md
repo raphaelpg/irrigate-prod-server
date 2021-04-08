@@ -38,6 +38,7 @@ The routes are tested with Jest and Supertest with following coverage:
 * [Jest](https://jestjs.io/) - Jest is a delightful JavaScript Testing Framework with a focus on simplicity. - v26.6.3  
 * [Supertest](https://github.com/visionmedia/supertest#readme) - Used to test the API routes. - v6.1.3  
 * [PM2](https://pm2.keymetrics.io/docs/usage/pm2-doc-single-page/) - Daemon process manager that will help you manage and keep your application online. - v4.5.5  
+* [Rate-limiter-flexible](https://github.com/animir/node-rate-limiter-flexible) - Counts and limits number of actions by key and protects from DDoS and brute force attacks at any scale. - v2.2.1  
 
 
 ## Authors

@@ -7,9 +7,9 @@ Purpose:
 Structure:  
 * The app.ts file contains the main app and configuration of express, the server.ts file starts the app.  
 
-* The project is structured with a router, controllers and services. Routes, controllers and services are divided into three categories, the users routes, the associations routes and the messages routes (handling messages from the contact form).  
+* The project is structured with a router, controllers and services. Routes, controllers and services are divided into three categories, the users, the associations and the messages (handling messages from the contact form).  
 
-* There are two middlewares, one for handleling the authentication and the other to check the parameters of the http request received.  
+* There are three middlewares, one for handleling the authentication, one to check the parameters of the http request received and an API rate limiter to avoid messages spamming and Ddos attacks.  
 
 * The functions folder contains the token functions, the encryption functions and also the functions to connect to the MongoDB Atlas. The purpose here is to use dependency injection so it will be easy to change the external libraries in the future.   
 

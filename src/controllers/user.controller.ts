@@ -22,6 +22,7 @@ const register = async (req: Request, res: Response) => {
 
 const login = async (req: Request, res: Response) => {
 	let query = req.body;
+	console.log("query:", query)
 	try {
 		if (!await userService.serviceLogin(query)) {
 			return res.status(400).json({ status: 400, msg: "Unauthorized" });

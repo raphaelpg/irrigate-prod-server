@@ -6,7 +6,7 @@ import IUser from '../interfaces/user';
 const jwtSecret = config.jwt.jwtSecret;
 const expirationTimeInSeconds = config.jwt.expirationTimeInSeconds;
 
-const sign: (query: IUser) => string = (query: IUser) => {
+const sign: (query: IUser) => string = (query) => {
   return jwt.sign({ email: query.email }, jwtSecret, { algorithm: 'HS256', expiresIn: expirationTimeInSeconds });
 };
 

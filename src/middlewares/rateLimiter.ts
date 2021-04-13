@@ -17,7 +17,7 @@ const opts10 = {
   storeClient: mongoConn,
   dbName: 'IrrigateV2',
   tableName: 'users-rate-limit',
-  points: 3000,
+  points: 3,
   duration: 60 * 2,
   blockDuration: 60 * 10,
 };
@@ -38,7 +38,7 @@ const opts1 = {
   storeClient: mongoConn,
   dbName: 'IrrigateV2',
   tableName: 'users-rate-limit-ddos',
-  points: 5000,
+  points: 5,
   duration: 1,
 };
 

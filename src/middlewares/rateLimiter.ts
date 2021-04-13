@@ -17,7 +17,7 @@ const opts10 = {
   storeClient: mongoConn,
   dbName: 'IrrigateV2',
   tableName: 'users-rate-limit',
-  points: 3,
+  points: 3000,
   duration: 60 * 2,
   blockDuration: 60 * 10,
 };
@@ -30,7 +30,7 @@ export const rateLimiterSpam = (req: Request, res: Response, next: NextFunction)
     next();
   })
   .catch(() => {
-    res.status(429).send('Too Many Requests');
+    res.status(429).send("Too many requests");
   });
 };
 
@@ -38,7 +38,7 @@ const opts1 = {
   storeClient: mongoConn,
   dbName: 'IrrigateV2',
   tableName: 'users-rate-limit-ddos',
-  points: 5,
+  points: 5000,
   duration: 1,
 };
 
@@ -50,6 +50,6 @@ export const rateLimiterDDos = (req: Request, res: Response, next: NextFunction)
       next();
     })
     .catch(() => {
-      res.status(429).send('Too Many Requests');
+      res.status(429).send("Too many requests");
     });
 };

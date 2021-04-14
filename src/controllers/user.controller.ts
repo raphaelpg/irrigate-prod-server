@@ -27,7 +27,7 @@ const login = async (req: Request, res: Response) => {
 			return res.status(400).json({ status: 400, msg: "Unauthorized" });
 		};
 		const token = tokenFunctions.sign(query);
-		return res.status(200).json({ status: 200, msg: "User authorized", token: token, user: req.body.email });
+		return res.status(200).json({ status: 200, msg: "User authorized", token: token, email: req.body.email });
 	} catch (e) {
 		return res.status(400).json({ status: 400, msg: e.message });
 	};

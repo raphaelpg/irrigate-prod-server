@@ -17,7 +17,7 @@ const opts10 = {
   storeClient: mongoConn,
   dbName: 'IrrigateV2',
   tableName: 'users-rate-limit',
-  points: 3,
+  points: 10,
   duration: 60 * 2,
   blockDuration: 60 * 10,
 };

@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import 'dotenv/config';
 import router from './routes/router';
-import { rateLimiterDDos } from './middlewares/rateLimiter';
+import rateLimiterDDos from './middlewares/ddosLimiter';
 
 const app = express();
 app.use('/', rateLimiterDDos);

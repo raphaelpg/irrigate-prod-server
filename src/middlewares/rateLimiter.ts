@@ -1,31 +1,16 @@
 import { Request, Response, NextFunction } from 'express';
-import { MongoClient } from 'mongodb';
-import config from '../config/config';
-import { RateLimiterMongo } from 'rate-limiter-flexible';
+import { RateLimiterMemory } from 'rate-limiter-flexible';
 
-const mongoOpts = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-};
-
-const mongoConn = MongoClient.connect(
-  config.mongo.completeUri,
-  mongoOpts
-);
-
-const opts10 = {
-  storeClient: mongoConn,
-  dbName: 'IrrigateV2',
-  tableName: 'users-rate-limit',
+const options = {
   points: 10,
   duration: 60 * 2,
   blockDuration: 60 * 10,
 };
 
-const rateLimiter10min = new RateLimiterMongo(opts10);
+const rateLimiter10 = new RateLimiterMemory(options);
 
-export const rateLimiterSpam = (req: Request, res: Response, next: NextFunction) => {
-  rateLimiter10min.consume(req.ip)
+export const rateLimiterSpam10 = (req: Request, res: Response, next: NextFunction) => {
+  rateLimiter10.consume(req.ip)
   .then(() => {
     next();
   })
@@ -34,22 +19,20 @@ export const rateLimiterSpam = (req: Request, res: Response, next: NextFunction)
   });
 };
 
-const opts1 = {
-  storeClient: mongoConn,
-  dbName: 'IrrigateV2',
-  tableName: 'users-rate-limit-ddos',
-  points: 5,
-  duration: 1,
+const options40 = {
+  points: 40,
+  duration: 60 * 2,
+  blockDuration: 60 * 10,
 };
 
-const rateLimiter1sec = new RateLimiterMongo(opts1);
+const rateLimiter40 = new RateLimiterMemory(options40);
 
-export const rateLimiterDDos = (req: Request, res: Response, next: NextFunction) => {
-  rateLimiter1sec.consume(req.ip)
-    .then(() => {
-      next();
-    })
-    .catch(() => {
-      res.status(429).send("Too many requests");
-    });
+export const rateLimiterSpam40 = (req: Request, res: Response, next: NextFunction) => {
+  rateLimiter40.consume(req.ip)
+  .then(() => {
+    next();
+  })
+  .catch(() => {
+    res.status(429).send("Too many requests");
+  });
 };

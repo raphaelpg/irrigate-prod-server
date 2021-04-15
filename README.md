@@ -20,10 +20,12 @@ Structure:
 
 The routes are tested with Jest and Supertest with following coverage:  
 
-94.14% Statements 289/307  
+93.69% Statements 312/333  
 90.38% Branches 47/52  
-100% Functions 61/61  
-93.48% Lines 258/276  
+95.71% Functions 67/70  
+93% Lines 279/300  
+
+You may increase the limits of the limiter middlewares in order to let the tests to be run properly.  
 
 
 ## Built With  

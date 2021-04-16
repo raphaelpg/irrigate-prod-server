@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
 
 const options = {
-  points: 10,
+  points: 100,
   duration: 60 * 2,
   blockDuration: 60 * 10,
 };

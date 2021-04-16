@@ -59,9 +59,32 @@ const deleteUser = async (req: Request, res: Response) => {
 	};
 };
 
+const updateUserAssociations = async (req: Request, res: Response) => {
+	if (!isEmail(req.body.email)) {
+		return res.status(400).json({ status: 400, msg: "Invalid email input" });
+	};
+	let notAString = false
+	req.body.subscribedAssociations.forEach((value: any) => {
+		if (typeof(value) !== 'string') {
+			notAString = true;
+		}
+	})
+	if (notAString) {
+		return res.status(400).json({ status: 400, msg: "Invalid association id" });
+	}
+	let query = req.body;
+	try {
+		await userService.serviceUpdateUserAssociations(query);
+		return res.status(200).json({ status: 200, msg: "User associations updated" });
+	} catch (e) {
+		return res.status(400).json({ status: 400, msg: e.message });
+	};
+};
+
 export default {
 	register,
 	login,
 	getUser,
-	deleteUser
+	deleteUser,
+	updateUserAssociations
 };

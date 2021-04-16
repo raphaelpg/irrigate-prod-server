@@ -4,18 +4,16 @@ import mockMessagesTemplate from '../mocks/mockMessage';
 
 describe("test messages routes", () => {
 
-  test("POST /api/message/add Should post a message properly", async (done) => {
-    await request(app)
+  test("POST /api/message/add Should post a message properly", (done) => {
+    request(app)
       .post("/api/message/add")
       .send(mockMessagesTemplate.mockMessage)
       .expect(201)
       .then((response) => {
         expect(response.body.msg).toEqual("Message sent successfully");
+        done();
       })
-      .catch((err) => {
-        done(err);
-      });
-    done();
+      .catch((err) => done(err));
   });
 
   test("POST /api/message/add Should reject if message is empty", (done) => {

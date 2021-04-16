@@ -54,3 +54,14 @@ Content-Type: application/json
   "email": "mock@mock.com",
   "message": "mock message"
 }
+
+
+###
+
+PATCH http://localhost:8080//api/user/updateSubscriptions
+Content-Type: application/json
+
+{
+  "email": "limited@test.com",
+  "subscribedAssociations": "mockAssociationId"
+}

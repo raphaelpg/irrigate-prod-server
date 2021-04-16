@@ -33,6 +33,30 @@ const mockUserTemplates = {
     email: "mock2@mock.com",
     password: "mockPassword"
   },
+
+  mockUserSubscribing: {
+    email: "mock@mock.com",
+    password: "mockPassword",
+    subscribedAssociations: [
+      "associationsID"
+    ]
+  },
+
+  mockUserSubscribingFakeEmail: {
+    email: "mockmock.com",
+    password: "mockPassword",
+    subscribedAssociations: [
+      "associationsID"
+    ]
+  },
+
+  mockUserSubscribingWrongAssociation: {
+    email: "mock@mock.com",
+    password: "mockPassword",
+    subscribedAssociations: [
+      {}
+    ]
+  }
 }
 
 export default mockUserTemplates;

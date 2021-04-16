@@ -15,6 +15,7 @@ router.patch('/api/association/update', rateLimiterSpam10, checkRequestFields(""
 router.get('/api/user', rateLimiterSpam10, checkRequestFields(""), userController.getUser);
 router.post('/api/user/add', rateLimiterSpam10, checkRequestFields(""), userController.register);
 router.post('/api/user/login', rateLimiterSpam10, checkRequestFields(""), userController.login);
+router.patch('/api/user/updateSubscriptions', rateLimiterSpam10, checkAuth, userController.updateUserAssociations);
 router.delete('/api/user/delete', checkAuth, rateLimiterSpam10, checkRequestFields(""), userController.deleteUser);
 router.post('/api/message/add', rateLimiterSpam10, checkRequestFields(""), messageController.sendMessage);
 

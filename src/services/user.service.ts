@@ -18,7 +18,7 @@ const serviceRegister = async (query: IUser) => {
   try {
     const { email, password } = query;
     const hashedPassword = await encryptFunctions.hashString(password);
-    return await dbAccessFunctions.insert(usersCollection, { email, password: hashedPassword });
+    return await dbAccessFunctions.insert(usersCollection, { email, password: hashedPassword, subscribedAssociations: [], role: "USER" });
   } catch (e) {
     throw Error("Error while inserting user");
   };
@@ -55,10 +55,23 @@ const serviceLogin = async (query: IUser) => {
   };
 };
 
+const serviceUpdateUserAssociations = async (query: IUser) => {
+  const users = await findUserByEmail(query.email);
+  if (users.length === 0) {
+    throw Error("Can't find user");
+  };
+  try {
+    return await dbAccessFunctions.update(usersCollection, {email: query.email}, {subscribedAssociations: query.subscribedAssociations})
+  } catch {
+    throw Error("Error when trying to update");
+  }
+}
+
 export default {
   findUserByEmail,
   serviceRegister,
   serviceGetUser,
   serviceDeleteUser,
-  serviceLogin
+  serviceLogin,
+  serviceUpdateUserAssociations
 };

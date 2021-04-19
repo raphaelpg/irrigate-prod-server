@@ -23,11 +23,18 @@ const register = async (req: Request, res: Response) => {
 const login = async (req: Request, res: Response) => {
 	let query = req.body;
 	try {
-		if (!await userService.serviceLogin(query)) {
-			return res.status(400).json({ status: 400, msg: "Unauthorized" });
-		};
-		const token = tokenFunctions.sign(query);
-		return res.status(200).json({ status: 200, msg: "User authorized", token: token, email: req.body.email });
+		const user = await userService.serviceLogin(query);
+		if (user) {
+			const token = tokenFunctions.sign(query);
+			return res.status(200).json({ 
+				status: 200, 
+				msg: "User authorized", 
+				token: token, 
+				email: req.body.email, 
+				subscribedAssociations: user.subscribedAssociations, 
+				role: user.role
+			});
+		}
 	} catch (e) {
 		return res.status(400).json({ status: 400, msg: e.message });
 	};

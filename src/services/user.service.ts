@@ -43,13 +43,17 @@ const serviceDeleteUser = async (email: string) => {
 };
 
 const serviceLogin = async (query: IUser) => {
-  const users = await findUserByEmail(query.email);
+  const users: any = await findUserByEmail(query.email);
   if (users.length === 0) {
     throw Error("Can't find user");
   };
   try {
-    const compare = await encryptFunctions.comparePasswords(query.password, users[0].password)
-    return compare;
+    if (await encryptFunctions.comparePasswords(query.password, users[0].password)) {
+      delete users[0].password;
+      return users[0];
+    } else {
+      throw Error("Error when trying to login");
+    }
   } catch {
     throw Error("Error when trying to login");
   };
